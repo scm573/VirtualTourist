@@ -12,6 +12,8 @@ class TravelLocationsMapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
+    var pinLocation: CLLocationCoordinate2D?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +25,8 @@ class TravelLocationsMapViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAlbum" {
-            
+            let photoVC = segue.destination as! PhotoAlbumViewController
+            photoVC.pinLocation = pinLocation
         }
     }
 }
@@ -57,5 +60,7 @@ extension TravelLocationsMapViewController: UIGestureRecognizerDelegate {
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         mapView.addAnnotation(annotation)
+        
+        pinLocation = coordinate
     }
 }
