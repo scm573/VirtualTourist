@@ -8,16 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		05F5FE54CDC9341D46C04CEB /* Pods_VirtualTourist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B46BB036A8D6C4714FC501B8 /* Pods_VirtualTourist.framework */; };
+		CE262607200C64AD00019E0E /* FlickrApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE262606200C64AD00019E0E /* FlickrApi.swift */; };
 		CE2A862D20074C1200A41220 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2A862C20074C1200A41220 /* AppDelegate.swift */; };
 		CE2A862F20074C1200A41220 /* TravelLocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2A862E20074C1200A41220 /* TravelLocationsMapViewController.swift */; };
 		CE2A863220074C1200A41220 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE2A863020074C1200A41220 /* Main.storyboard */; };
 		CE2A863420074C1200A41220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE2A863320074C1200A41220 /* Assets.xcassets */; };
 		CE2A863720074C1200A41220 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE2A863520074C1200A41220 /* LaunchScreen.storyboard */; };
+		CEB2F122200C6A5200817C0A /* ReachabilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2F121200C6A5200817C0A /* ReachabilityHelper.swift */; };
+		CEB2F124200C6A8A00817C0A /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2F123200C6A8A00817C0A /* GCDBlackBox.swift */; };
+		CEB2F126200C6B1800817C0A /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2F125200C6B1800817C0A /* AlertHelper.swift */; };
+		CEB2F128200C6D2D00817C0A /* FlickrApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2F127200C6D2D00817C0A /* FlickrApiResponse.swift */; };
+		CEB2F12B200C6FA600817C0A /* PhotoAlbumUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2F12A200C6FA600817C0A /* PhotoAlbumUICollectionViewCell.swift */; };
 		CEE0CD90200754520084CC0F /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0CD8F200754520084CC0F /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B46BB036A8D6C4714FC501B8 /* Pods_VirtualTourist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VirtualTourist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE262606200C64AD00019E0E /* FlickrApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApi.swift; sourceTree = "<group>"; };
 		CE2A862920074C1200A41220 /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2A862C20074C1200A41220 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE2A862E20074C1200A41220 /* TravelLocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsMapViewController.swift; sourceTree = "<group>"; };
@@ -25,6 +32,11 @@
 		CE2A863320074C1200A41220 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE2A863620074C1200A41220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE2A863820074C1200A41220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEB2F121200C6A5200817C0A /* ReachabilityHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityHelper.swift; sourceTree = "<group>"; };
+		CEB2F123200C6A8A00817C0A /* GCDBlackBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		CEB2F125200C6B1800817C0A /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
+		CEB2F127200C6D2D00817C0A /* FlickrApiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiResponse.swift; sourceTree = "<group>"; };
+		CEB2F12A200C6FA600817C0A /* PhotoAlbumUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumUICollectionViewCell.swift; sourceTree = "<group>"; };
 		CEE0CD8F200754520084CC0F /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		CF17F52F6994264112D2E074 /* Pods-VirtualTourist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualTourist.release.xcconfig"; path = "Pods/Target Support Files/Pods-VirtualTourist/Pods-VirtualTourist.release.xcconfig"; sourceTree = "<group>"; };
 		D02BF5043C15CF0201B1162E /* Pods-VirtualTourist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualTourist.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VirtualTourist/Pods-VirtualTourist.debug.xcconfig"; sourceTree = "<group>"; };
@@ -51,6 +63,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CE262605200C648300019E0E /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				CE262606200C64AD00019E0E /* FlickrApi.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
 		CE2A862020074C1200A41220 = {
 			isa = PBXGroup;
 			children = (
@@ -72,8 +92,11 @@
 		CE2A862B20074C1200A41220 /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
-				CEE0CD8E2007532F0084CC0F /* ViewController */,
+				CE262605200C648300019E0E /* Api */,
 				CEE0CD8D2007531A0084CC0F /* Model */,
+				CEE0CD8E2007532F0084CC0F /* ViewController */,
+				CEB2F129200C6F7100817C0A /* View */,
+				CEB2F120200C6A3500817C0A /* Helper */,
 				CE2A862C20074C1200A41220 /* AppDelegate.swift */,
 				CE2A863020074C1200A41220 /* Main.storyboard */,
 				CE2A863320074C1200A41220 /* Assets.xcassets */,
@@ -83,9 +106,28 @@
 			path = VirtualTourist;
 			sourceTree = "<group>";
 		};
+		CEB2F120200C6A3500817C0A /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				CEB2F121200C6A5200817C0A /* ReachabilityHelper.swift */,
+				CEB2F123200C6A8A00817C0A /* GCDBlackBox.swift */,
+				CEB2F125200C6B1800817C0A /* AlertHelper.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		CEB2F129200C6F7100817C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEB2F12A200C6FA600817C0A /* PhotoAlbumUICollectionViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		CEE0CD8D2007531A0084CC0F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEB2F127200C6D2D00817C0A /* FlickrApiResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -217,13 +259,15 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-VirtualTourist/Pods-VirtualTourist-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -240,6 +284,12 @@
 				CE2A862F20074C1200A41220 /* TravelLocationsMapViewController.swift in Sources */,
 				CE2A862D20074C1200A41220 /* AppDelegate.swift in Sources */,
 				CEE0CD90200754520084CC0F /* PhotoAlbumViewController.swift in Sources */,
+				CEB2F12B200C6FA600817C0A /* PhotoAlbumUICollectionViewCell.swift in Sources */,
+				CEB2F122200C6A5200817C0A /* ReachabilityHelper.swift in Sources */,
+				CEB2F126200C6B1800817C0A /* AlertHelper.swift in Sources */,
+				CEB2F124200C6A8A00817C0A /* GCDBlackBox.swift in Sources */,
+				CEB2F128200C6D2D00817C0A /* FlickrApiResponse.swift in Sources */,
+				CE262607200C64AD00019E0E /* FlickrApi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -61,19 +61,33 @@
                                 <rect key="frame" x="0.0" y="264" width="375" height="403"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HgJ-7X-0ey">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="120" height="120"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="XOd-s4-hba">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="photoCell" id="XOd-s4-hba" customClass="PhotoAlbumUICollectionViewCell" customModule="VirtualTourist" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MN4-cj-tqY">
+                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                                                </imageView>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="MN4-cj-tqY" firstAttribute="leading" secondItem="XOd-s4-hba" secondAttribute="leading" id="Em5-bh-P0h"/>
+                                            <constraint firstAttribute="trailing" secondItem="MN4-cj-tqY" secondAttribute="trailing" id="jGC-pl-fc1"/>
+                                            <constraint firstItem="MN4-cj-tqY" firstAttribute="top" secondItem="XOd-s4-hba" secondAttribute="top" id="q0K-U7-09v"/>
+                                            <constraint firstAttribute="bottom" secondItem="MN4-cj-tqY" secondAttribute="bottom" id="xg6-j2-krw"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="MN4-cj-tqY" id="iwm-vb-omj"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -91,6 +105,8 @@
                         <viewLayoutGuide key="safeArea" id="giX-hv-HHy"/>
                     </view>
                     <connections>
+                        <outlet property="collectionView" destination="IsA-5t-gp3" id="BQa-sg-a7M"/>
+                        <outlet property="flowLayout" destination="HgJ-7X-0ey" id="IM2-br-xng"/>
                         <outlet property="mapView" destination="M4q-xv-paO" id="1gS-l8-v64"/>
                     </connections>
                 </viewController>
