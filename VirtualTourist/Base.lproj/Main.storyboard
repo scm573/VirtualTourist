@@ -31,9 +31,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Virtual Tourist" id="cs7-QU-6sw">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="qzj-Fd-8MQ"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Virtual Tourist" id="cs7-QU-6sw"/>
                     <connections>
                         <outlet property="mapView" destination="5Ch-rH-kR4" id="aIp-2u-RKu"/>
                         <segue destination="fTt-AP-qjt" kind="show" identifier="showAlbum" id="cZh-zZ-obg"/>

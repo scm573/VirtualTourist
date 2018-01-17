@@ -57,7 +57,7 @@ class PhotoAlbumViewController: UIViewController {
             let decoder: JSONDecoder = JSONDecoder()
             do {
                 defer {
-                    self.newCollectionButton.isEnabled = true
+                    self.newCollectionButton.isEnabled = true // Too slow here, why?
                 }
                 let flickrApiResponse: FlickrApiResponse = try decoder.decode(FlickrApiResponse.self, from: data!)
                 self.photos = flickrApiResponse.photos?.photo
