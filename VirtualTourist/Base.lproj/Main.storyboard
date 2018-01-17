@@ -58,7 +58,7 @@
                                 </constraints>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IsA-5t-gp3">
-                                <rect key="frame" x="0.0" y="264" width="375" height="403"/>
+                                <rect key="frame" x="0.0" y="264" width="375" height="359"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HgJ-7X-0ey">
                                     <size key="itemSize" width="120" height="120"/>
@@ -91,15 +91,30 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SG-UY-Pra">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="3vk-Nq-5db"/>
+                                    <barButtonItem enabled="NO" title="New Collection" id="ltr-L3-2GF">
+                                        <connections>
+                                            <action selector="requestNewCollection:" destination="fTt-AP-qjt" id="hYK-1a-Fjv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="w9W-C4-rNn"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="IsA-5t-gp3" firstAttribute="top" secondItem="M4q-xv-paO" secondAttribute="bottom" id="7E7-Hs-d9L"/>
+                            <constraint firstItem="5SG-UY-Pra" firstAttribute="leading" secondItem="giX-hv-HHy" secondAttribute="leading" id="ABl-lM-qiF"/>
                             <constraint firstItem="IsA-5t-gp3" firstAttribute="leading" secondItem="giX-hv-HHy" secondAttribute="leading" id="FWb-rI-s2P"/>
+                            <constraint firstItem="5SG-UY-Pra" firstAttribute="trailing" secondItem="giX-hv-HHy" secondAttribute="trailing" id="GNX-X8-G9R"/>
                             <constraint firstItem="M4q-xv-paO" firstAttribute="top" secondItem="giX-hv-HHy" secondAttribute="top" id="Hzj-Aa-MXM"/>
                             <constraint firstItem="giX-hv-HHy" firstAttribute="trailing" secondItem="M4q-xv-paO" secondAttribute="trailing" id="aQ4-6x-Mcb"/>
+                            <constraint firstItem="5SG-UY-Pra" firstAttribute="bottom" secondItem="giX-hv-HHy" secondAttribute="bottom" id="bBJ-EL-Agf"/>
+                            <constraint firstItem="5SG-UY-Pra" firstAttribute="top" secondItem="IsA-5t-gp3" secondAttribute="bottom" id="e4g-wD-rBx"/>
                             <constraint firstItem="M4q-xv-paO" firstAttribute="leading" secondItem="giX-hv-HHy" secondAttribute="leading" id="ihx-oM-Jtx"/>
-                            <constraint firstItem="giX-hv-HHy" firstAttribute="bottom" secondItem="IsA-5t-gp3" secondAttribute="bottom" id="mzh-Zc-SqY"/>
                             <constraint firstItem="giX-hv-HHy" firstAttribute="trailing" secondItem="IsA-5t-gp3" secondAttribute="trailing" id="scI-m2-Rnl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="giX-hv-HHy"/>
@@ -108,6 +123,7 @@
                         <outlet property="collectionView" destination="IsA-5t-gp3" id="BQa-sg-a7M"/>
                         <outlet property="flowLayout" destination="HgJ-7X-0ey" id="IM2-br-xng"/>
                         <outlet property="mapView" destination="M4q-xv-paO" id="1gS-l8-v64"/>
+                        <outlet property="newCollectionButton" destination="ltr-L3-2GF" id="DVu-2R-ta5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2SR-X9-EPS" userLabel="First Responder" sceneMemberID="firstResponder"/>

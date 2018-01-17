@@ -14,9 +14,17 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var newCollectionButton: UIBarButtonItem!
     
     var pinLocation: CLLocationCoordinate2D?
-    var photos: [FlickrApiResponse.Photos.Photo]?
+    var photos: [FlickrApiResponse.Photos.Photo]? {
+        didSet {
+            guard let photos = photos else { return }
+            randomPhotos = Array(photos.sorted { _,_ in arc4random_uniform(1) == 0 }.prefix(21)).map {$0}
+        }
+    }
+    var randomPhotos: [FlickrApiResponse.Photos.Photo]?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,17 +39,26 @@ class PhotoAlbumViewController: UIViewController {
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
         
-        guard let coordinate = pinLocation else {
-            return
-        }
-        
+        guard let coordinate = pinLocation else { return }
+        request()
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         mapView.addAnnotation(annotation)
-        
+    }
+    
+    @IBAction func requestNewCollection(_ sender: Any) {
+        newCollectionButton.isEnabled = false
+        request()
+    }
+    
+    func request() {
+        guard let coordinate = pinLocation else { return }
         requestPhotosNear(coordinate) { data, response, error in
             let decoder: JSONDecoder = JSONDecoder()
             do {
+                defer {
+                    self.newCollectionButton.isEnabled = true
+                }
                 let flickrApiResponse: FlickrApiResponse = try decoder.decode(FlickrApiResponse.self, from: data!)
                 self.photos = flickrApiResponse.photos?.photo
                 performUIUpdatesOnMain { self.collectionView.reloadData() }
@@ -71,12 +88,12 @@ extension PhotoAlbumViewController: MKMapViewDelegate {
 
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos?.count ?? 0
+        return randomPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoAlbumUICollectionViewCell
-        let imageUrl = URL(string: (photos?[indexPath.row].url_m)!)
+        let imageUrl = URL(string: (randomPhotos?[indexPath.row].url_m)!)
         cell.imageView.kf.indicatorType = .activity
         cell.imageView.kf.setImage(with: imageUrl)
         return cell
