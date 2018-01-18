@@ -14,7 +14,7 @@ internal func queryDataOf(entityName: String, predicate: NSPredicate, completion
     request.entity = entity
     request.predicate = predicate
     
-    do{
+    do {
         let fetchedObjects = try AppDelegate.shared.stack.context.fetch(request)
         completionHandler(fetchedObjects)
     }

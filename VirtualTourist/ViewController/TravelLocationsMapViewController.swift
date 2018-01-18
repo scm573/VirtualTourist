@@ -13,6 +13,8 @@ class TravelLocationsMapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
+    var pinList: [Pin] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,8 +25,9 @@ class TravelLocationsMapViewController: UIViewController {
         
         let predicate = NSPredicate(value: true)
         queryDataOf(entityName: "Pin", predicate: predicate) { fetchedObjects in
-            for pin in fetchedObjects as! [Pin] {
-                self.addPinAt(CLLocationCoordinate2D(latitude: pin.lat, longitude: pin.lng))
+            fetchedObjects.forEach {
+                self.pinList.append($0 as! Pin)
+                self.addPinAt(CLLocationCoordinate2D(latitude: ($0 as! Pin).lat, longitude: ($0 as! Pin).lng))
             }
         }
         
@@ -39,9 +42,12 @@ class TravelLocationsMapViewController: UIViewController {
             let photoVC = segue.destination as! PhotoAlbumViewController
             let pinLocation = sender as! CLLocationCoordinate2D
             photoVC.pinLocation = pinLocation
+            photoVC.pin = pinList.first { $0.lat == pinLocation.latitude && $0.lng == pinLocation.longitude }
         }
     }
 }
+
+
 
 extension TravelLocationsMapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -88,6 +94,7 @@ extension TravelLocationsMapViewController: UIGestureRecognizerDelegate {
         
         do {
             try AppDelegate.shared.stack.context.save()
+            pinList.append(pin)
         }
         catch {
             fatalError("Cannot save pin.")

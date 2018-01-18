@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import Kingfisher
+import CoreData
 
 class PhotoAlbumViewController: UIViewController {
     
@@ -17,13 +18,23 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var newCollectionButton: UIBarButtonItem!
     
     var pinLocation: CLLocationCoordinate2D?
-    var photos: [FlickrApiResponse.Photos.Photo]? {
+    var pin: Pin?
+    var downloadedPhotos: [FlickrApiResponse.Photos.Photo]? {
         didSet {
-            guard let photos = photos else { return }
-            randomPhotos = Array(photos.sorted { _,_ in arc4random_uniform(1) == 0 }.prefix(21)).map { $0 }
+            guard let photos = downloadedPhotos else { return }
+            processedPhotos = Array(photos.sorted { _,_ in arc4random_uniform(1) == 0 }.prefix(21)).map { $0 }
         }
     }
-    var randomPhotos: [FlickrApiResponse.Photos.Photo]?
+    var processedPhotos: [FlickrApiResponse.Photos.Photo]? {
+        didSet {
+            processedPhotos?.forEach { insert($0) }
+        }
+    }
+    var photoEntities: [Photo]? {
+        didSet {
+            performUIUpdatesOnMain { self.collectionView.reloadData() }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,22 +43,33 @@ class PhotoAlbumViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        let space:CGFloat = 3.0
+        let space: CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
         
         guard let coordinate = pinLocation else { return }
-        request()
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         mapView.addAnnotation(annotation)
         mapView.setCenter(coordinate, animated: false)
+        
+        guard let pin = pin else { return }
+        let predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        queryDataOf(entityName: "Photo", predicate: predicate) { fetchedObjects in
+            if fetchedObjects.count == 0 {
+                self.request()
+            } else {
+                self.photoEntities = fetchedObjects as? [Photo]
+                self.newCollectionButton.isEnabled = true
+            }
+        }
     }
     
     @IBAction func requestNewCollection(_ sender: Any) {
         newCollectionButton.isEnabled = false
+        deleteAllPhotos()
         request()
     }
     
@@ -60,8 +82,12 @@ class PhotoAlbumViewController: UIViewController {
                     self.newCollectionButton.isEnabled = true // Too slow here, why?
                 }
                 let flickrApiResponse: FlickrApiResponse = try decoder.decode(FlickrApiResponse.self, from: data!)
-                self.photos = flickrApiResponse.photos?.photo
-                performUIUpdatesOnMain { self.collectionView.reloadData() }
+                self.downloadedPhotos = flickrApiResponse.photos?.photo
+                
+                let predicate = NSPredicate(format: "pin = %@", argumentArray: [self.pin!])
+                queryDataOf(entityName: "Photo", predicate: predicate) { fetchedObjects in
+                    self.photoEntities = fetchedObjects as? [Photo]
+                }
             } catch {
                 print("json convert failed in JSONDecoder", error.localizedDescription)
             }
@@ -88,18 +114,56 @@ extension PhotoAlbumViewController: MKMapViewDelegate {
 
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return randomPhotos?.count ?? 0
+        return photoEntities?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoAlbumUICollectionViewCell
-        let imageUrl = URL(string: (randomPhotos?[indexPath.row].url_m)!)
+        let imageUrl = URL(string: (photoEntities?[indexPath.row].url)!)
         cell.imageView.kf.indicatorType = .activity
         cell.imageView.kf.setImage(with: imageUrl)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photoToBeDeleted = self.photoEntities?[indexPath.row]
+        delete(photoToBeDeleted!)
+        self.photoEntities?.remove(at: indexPath.row)
+        self.collectionView.reloadData()
+    }
+}
+
+extension PhotoAlbumViewController {
+    func insert(_ photo: FlickrApiResponse.Photos.Photo) {
+        let photoEntity = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: AppDelegate.shared.stack.context) as! Photo
+        photoEntity.pin = pin
+        photoEntity.url = photo.url_m
         
+        do {
+            try AppDelegate.shared.stack.context.save()
+        }
+        catch {
+            fatalError("Failed when saving a photo.")
+        }
+    }
+    
+    func delete(_ photo: Photo) {
+        do {
+            AppDelegate.shared.stack.context.delete(photo)
+            try AppDelegate.shared.stack.context.save()
+        }
+        catch {
+            fatalError("Failed when deleting a photo.")
+        }
+    }
+    
+    func deleteAllPhotos() {
+        do {
+            self.photoEntities?.forEach { AppDelegate.shared.stack.context.delete($0) }
+            try AppDelegate.shared.stack.context.save()
+        }
+        catch {
+            fatalError("Failed when deleting photos.")
+        }
     }
 }
