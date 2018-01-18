@@ -20,11 +20,10 @@ class PhotoAlbumViewController: UIViewController {
     var photos: [FlickrApiResponse.Photos.Photo]? {
         didSet {
             guard let photos = photos else { return }
-            randomPhotos = Array(photos.sorted { _,_ in arc4random_uniform(1) == 0 }.prefix(21)).map {$0}
+            randomPhotos = Array(photos.sorted { _,_ in arc4random_uniform(1) == 0 }.prefix(21)).map { $0 }
         }
     }
     var randomPhotos: [FlickrApiResponse.Photos.Photo]?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +43,7 @@ class PhotoAlbumViewController: UIViewController {
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         mapView.addAnnotation(annotation)
+        mapView.setCenter(coordinate, animated: false)
     }
     
     @IBAction func requestNewCollection(_ sender: Any) {
