@@ -21,7 +21,6 @@ class TravelLocationsMapViewController: UIViewController {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
         gestureRecognizer.delegate = self
         mapView.addGestureRecognizer(gestureRecognizer)
-        mapView.delegate = self
         
         let predicate = NSPredicate(value: true)
         queryDataOf(entityName: "Pin", predicate: predicate) { fetchedObjects in
@@ -86,18 +85,20 @@ extension TravelLocationsMapViewController: UIGestureRecognizerDelegate {
         let location = gestureReconizer.location(in: mapView)
         let coordinate = mapView.convert(location,toCoordinateFrom: mapView)
         
-        addPinAt(coordinate)
-        
-        let pin = NSEntityDescription.insertNewObject(forEntityName: "Pin", into: AppDelegate.shared.stack.context) as! Pin
-        pin.lat = coordinate.latitude
-        pin.lng = coordinate.longitude
-        
-        do {
-            try AppDelegate.shared.stack.context.save()
-            pinList.append(pin)
-        }
-        catch {
-            fatalError("Cannot save pin.")
+        if gestureReconizer.state == .ended {
+            addPinAt(coordinate)
+            
+            let pin = NSEntityDescription.insertNewObject(forEntityName: "Pin", into: AppDelegate.shared.stack.context) as! Pin
+            pin.lat = coordinate.latitude
+            pin.lng = coordinate.longitude
+            
+            do {
+                try AppDelegate.shared.stack.context.save()
+                self.pinList.append(pin)
+            }
+            catch {
+                fatalError("Cannot save pin.")
+            }
         }
     }
 }

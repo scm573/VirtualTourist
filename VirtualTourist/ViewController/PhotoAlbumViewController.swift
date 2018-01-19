@@ -21,13 +21,11 @@ class PhotoAlbumViewController: UIViewController {
     var pin: Pin?
     var downloadedPhotos: [FlickrApiResponse.Photos.Photo]? {
         didSet {
-            guard let photos = downloadedPhotos else { return }
-            processedPhotos = Array(photos.sorted { _,_ in arc4random_uniform(1) == 0 }.prefix(21)).map { $0 }
-        }
-    }
-    var processedPhotos: [FlickrApiResponse.Photos.Photo]? {
-        didSet {
-            processedPhotos?.forEach { insert($0) }
+            downloadedPhotos?.forEach { insert($0) }
+            let predicate = NSPredicate(format: "pin = %@", argumentArray: [self.pin!])
+            queryDataOf(entityName: "Photo", predicate: predicate) { fetchedObjects in
+                self.photoEntities = fetchedObjects as? [Photo]
+            }
         }
     }
     var photoEntities: [Photo]? {
@@ -38,10 +36,6 @@ class PhotoAlbumViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mapView.delegate = self
-        collectionView.delegate = self
-        collectionView.dataSource = self
         
         let space: CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
@@ -78,17 +72,15 @@ class PhotoAlbumViewController: UIViewController {
         requestPhotosNear(coordinate) { data, response, error in
             let decoder: JSONDecoder = JSONDecoder()
             do {
-                defer {
-                    self.newCollectionButton.isEnabled = true // Too slow here, why?
+                performUIUpdatesOnMain {
+                    self.newCollectionButton.isEnabled = true
                 }
                 let flickrApiResponse: FlickrApiResponse = try decoder.decode(FlickrApiResponse.self, from: data!)
                 self.downloadedPhotos = flickrApiResponse.photos?.photo
-                
-                let predicate = NSPredicate(format: "pin = %@", argumentArray: [self.pin!])
-                queryDataOf(entityName: "Photo", predicate: predicate) { fetchedObjects in
-                    self.photoEntities = fetchedObjects as? [Photo]
-                }
             } catch {
+                performUIUpdatesOnMain {
+                    self.newCollectionButton.isEnabled = true
+                }
                 print("json convert failed in JSONDecoder", error.localizedDescription)
             }
         }
@@ -121,7 +113,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoAlbumUICollectionViewCell
         let imageUrl = URL(string: (photoEntities?[indexPath.row].url)!)
         cell.imageView.kf.indicatorType = .activity
-        cell.imageView.kf.setImage(with: imageUrl)
+        cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "AppIcon"))
         return cell
     }
     
