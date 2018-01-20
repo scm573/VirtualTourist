@@ -19,12 +19,15 @@ class PhotoAlbumViewController: UIViewController {
     
     var pinLocation: CLLocationCoordinate2D?
     var pin: Pin?
+    var pages: Int?
     var downloadedPhotos: [FlickrApiResponse.Photos.Photo]? {
         didSet {
-            downloadedPhotos?.forEach { insert($0) }
-            let predicate = NSPredicate(format: "pin = %@", argumentArray: [self.pin!])
-            queryDataOf(entityName: "Photo", predicate: predicate) { fetchedObjects in
-                self.photoEntities = fetchedObjects as? [Photo]
+            performUIUpdatesOnMain {
+                self.downloadedPhotos?.forEach { self.insert($0) }
+                let predicate = NSPredicate(format: "pin = %@", argumentArray: [self.pin!])
+                queryDataOf(entityName: "Photo", predicate: predicate) { fetchedObjects in
+                    self.photoEntities = fetchedObjects as? [Photo]
+                }
             }
         }
     }
@@ -69,7 +72,7 @@ class PhotoAlbumViewController: UIViewController {
     
     func request() {
         guard let coordinate = pinLocation else { return }
-        requestPhotosNear(coordinate) { data, response, error in
+        requestPhotosNear(coordinate, pages: pages) { data, response, error in
             let decoder: JSONDecoder = JSONDecoder()
             do {
                 performUIUpdatesOnMain {
@@ -77,6 +80,7 @@ class PhotoAlbumViewController: UIViewController {
                 }
                 let flickrApiResponse: FlickrApiResponse = try decoder.decode(FlickrApiResponse.self, from: data!)
                 self.downloadedPhotos = flickrApiResponse.photos?.photo
+                self.pages = flickrApiResponse.photos?.pages
             } catch {
                 performUIUpdatesOnMain {
                     self.newCollectionButton.isEnabled = true
@@ -111,9 +115,27 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoAlbumUICollectionViewCell
-        let imageUrl = URL(string: (photoEntities?[indexPath.row].url)!)
-        cell.imageView.kf.indicatorType = .activity
-        cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "AppIcon"))
+        
+        let photoEntity = photoEntities?[indexPath.row]
+        if let imageData = photoEntity?.imageData {
+            cell.imageView.image = UIImage(data: imageData)
+        } else {
+            let imageUrl = URL(string: (photoEntities?[indexPath.row].url)!)
+            cell.imageView.kf.indicatorType = .activity
+            cell.imageView.kf.setImage(with: imageUrl, placeholder: UIImage(named: "AppIcon"))
+            
+            KingfisherManager.shared.retrieveImage(with: imageUrl!, options: nil, progressBlock: nil) { image, error, cacheType, imageURL in
+                if let image = image {
+                    photoEntity?.imageData = UIImageJPEGRepresentation(image, 1)
+                    do {
+                        try AppDelegate.shared.stack.context.save()
+                    }
+                    catch {
+                        fatalError("Failed when saving a photo.")
+                    }
+                }
+            }
+        }
         return cell
     }
     
