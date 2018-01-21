@@ -93,6 +93,7 @@ extension CoreDataStack {
         }
     }
     
+    // TODO: Activate auto-save() for saving the context periodically.
     func autoSave(_ delayInSeconds : Int) {
         
         if delayInSeconds > 0 {

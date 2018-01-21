@@ -66,6 +66,7 @@ extension TravelLocationsMapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         performSegue(withIdentifier: "showAlbum", sender: view.annotation?.coordinate)
+        mapView.deselectAnnotation(view.annotation, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
